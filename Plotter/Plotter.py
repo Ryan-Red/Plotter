@@ -8,15 +8,6 @@ import scipy.stats as stats
 import uncertainties.umath
 import scipy.constants
 
-#Constants
-mu_0 = 4*np.pi*math.pow(10,-7) #Electric dipole moment
-R = 6 * 0.0254 # in meters, 6 inches
-n = 320 # number of coils
-
-h = scipy.constants.h #Plank's constant
-m_e = scipy.constants.m_e #mass of an electron
-e = scipy.constants.e # charge of an electron
-
 def curveFit(x,A):
     return np.multiply(A,x)
 
