@@ -8,8 +8,8 @@ import scipy.stats as stats
 import uncertainties.umath
 import scipy.constants
 
-def curveFit(x,A):
-    return np.multiply(A,x)
+def linearFit(x, A, B):
+    return np.multiply(A,x) + B
 
 def zeroFunc(x):
     return [0]*(len(x))
@@ -33,6 +33,9 @@ class plotter:
         self.Xerror = []
         self.Yerror = []
 
+        self.pcov = []
+        self.popt = []
+
         self.plt = plt
 
         
@@ -44,6 +47,12 @@ class plotter:
             self.split = ","
         elif fileType.casefold() == "tsv":
             self.split = "\t"
+        elif fileType.casefold() == "raw":
+            self.XVal = X
+            self.Xerror = UncertX
+            self.YVal = Y
+            self.Yerror = UncertY
+
         else:
             self.split = " "
 
@@ -82,15 +91,56 @@ class plotter:
 
 
     def plotErrorBars(self,title = "X vs Y",color='red',errorbarColor='lightgray',format='.',capsize = 1):
-        self.plt.errorbars(self.XVals,self.YVals,self.Yerror, self.Xerror,fmt =format, ecolor = errorbarColor, color = color,capsize = capsize)
+        print(self.Xerror)
+        print(self.Yerror)
+        self.plt.errorbar(self.XVal,self.YVal,self.Yerror, self.Xerror,fmt =format, ecolor = errorbarColor,capsize = capsize)
         self.plt.xLabel = self.xLabel
         self.plt.yLabel = self.yLabel
         self.plt.title = title
         return 0
 
+    def fitData(self, func = linearFit):
+
+        popt, pcov = curve_fit(func, self.XVal, self.YVal)
+
+        if len(popt) >= 1:
+            d_N = [np.sqrt(pcov[i][i]) for i in range(0, len(popt),1) ]
+        else:
+            d_N = [ np.sqrt(pcov[0]) ]
+
+        self.popt = popt
+        self.pcov = pcov
+
+        return d_N
+    def graphFunc(self,func=linearFit,color='purple',legend="Fit"):
+        print(self.popt)
+        y = func(self.XVal,*self.popt )
+
+        self.plt.plot(self.XVal,y,color=color)
+        self.plt.legend(legend)
+
+        return 0
+    
+
     def show(self):
         self.plt.show()
         return 0;
+
+
+X = range(0,10,1)
+Y = range(1,21,2)
+
+Error = (np.ones(10)*0.5)
+
+pltr = plotter("",X,Y,Error,Error,xLabel = "x", yLabel= "y", fileType="raw")
+pltr.plotErrorBars()
+pltr.fitData()
+pltr.graphFunc()
+pltr.show()
+
+
+
+
 
 
 
@@ -105,18 +155,18 @@ class plotter:
 #Frequency = (1/2pi)*gamma*B
 
 
-dataFiles = ["Coil E.csv", "Coil F.csv", "Coil G.csv"]
+#dataFiles = ["Coil E.csv", "Coil F.csv", "Coil G.csv"]
 
-Current = []
-Frequency = []
-
-
+#Current = []
+#Frequency = []
 
 
-plot =  plotter(dataFiles,X=0,Y=2,UncertY=1 ,UncertX= 3,xLabel="current",yLabel="Frequency",fileType="csv") 
-plot.loadVals()
-plot.plotErrorBars()
-plot.plt.show()
+
+
+#plot =  plotter(dataFiles,X=0,Y=2,UncertY=1 ,UncertX= 3,xLabel="current",yLabel="Frequency",fileType="csv") 
+#plot.loadVals()
+#plot.plotErrorBars()
+#plot.plt.show()
 
 
 #for i in range(0,3):
