@@ -119,12 +119,12 @@ class plotter:
         self.plt.plot(self.XVal,y,color=color)
         self.plt.legend(legend)
 
-        return 0
+        return 1
     
 
     def show(self):
         self.plt.show()
-        return 0;
+        return 1
 
 
 X = range(0,10,1)
@@ -142,110 +142,6 @@ pltr.show()
 
 
 
-
-
-
-
-
-
-# assume magnetic field is only pointing in the z direction
-#2pi * f/ Bz = gyromagnetic ratio
-# lande g factor = gamma/ (e/2m)
-
-#Frequency = (1/2pi)*gamma*B
-
-
-#dataFiles = ["Coil E.csv", "Coil F.csv", "Coil G.csv"]
-
-#Current = []
-#Frequency = []
-
-
-
-
-#plot =  plotter(dataFiles,X=0,Y=2,UncertY=1 ,UncertX= 3,xLabel="current",yLabel="Frequency",fileType="csv") 
-#plot.loadVals()
-#plot.plotErrorBars()
-#plot.plt.show()
-
-
-#for i in range(0,3):
-#    f = open(dataFiles[i])
-#    lines = f.readlines()
-#    for line in lines:
-#        RawData = line.split(',')
-#        print(RawData)
-#        Current = Current + [ufloat(float(RawData[0]), float(RawData[1]))] #Current + uncertainty (in A)
-#        Frequency = Frequency + [ufloat(float(RawData[2]),float(RawData[2].split('\n')[0]))*1000*1000] # Frequency in Hz
-        
-#Bfield = BFunc(Current)
-
-##Gyro = GyroFunc(Frequency,Bfield)
-
-#B_val = [val.n for val in Bfield]
-#B_uncert = [val.s for val in Bfield]
-
-#Current_val = [val.n for val in Current]
-#Current_uncert = [val.s for val in Current]
-
-
-#Freq_val = [val.n for val in Frequency]
-#Freq_uncert = [val.s for val in Frequency]
-
-##Gyro_val = [val.n for val in Gyro]
-##Gyro_uncert = [val.s for val in Gyro]
-
-
-##Plotting Frquency vs Current
-
-#plt.errorbar(Current_val,Freq_val,Freq_uncert,Current_uncert,fmt='.',ecolor="lightgray",capsize=1)
-
-#popt, pcov = curve_fit(curveFit,Current_val,Freq_val)
-#d_A = np.sqrt(pcov[0])
-
-
-#A = ufloat(popt,d_A)
-
-
-
-#equation = 'Frequency = ' + str(A) + " * I" 
-#plt.plot(Current_val,curveFit(Current_val,*popt),color="green",label = equation)
-#plt.legend()
-#plt.title(" Current vs  Frequency ")
-#plt.xlabel("Current (A)")
-#plt.ylabel("Frequency (Hz)")
-
-
-
-#BSlopeFact = (math.pow(.8,1.5)*mu_0*n/R)
-#FreqSlopeFact = (1/(2*math.pi))
-
-#Gyro = np.divide(A,BSlopeFact*FreqSlopeFact)
-
-
-#print("Gyromagnetic Ratio = " + str(Gyro))
-
-
-#G_fact = Gyro/(e/(2*m_e))
-#print("Lande g Factor = " + str(G_fact))
-
-#print(G_fact/2.002)
-
-
-#plt.show()
-
-
-#yval = curveFit(Current_val,*popt)- Freq_val
-#plt.plot(Current_val,zeroFunc(Current_val),color='red')
-#plt.scatter(Current_val,yval,marker='d',color='blue')
-
-
-#chi_0 = np.power(np.divide(yval,Freq_uncert),2)
-#chisq = np.sum(chi_0)/(len(yval)-2) #One fit param
-#print("Reduced Chisquared Val For Outer Circle is: " +str(chisq))
-
-
-#plt.show()
 
 
 
